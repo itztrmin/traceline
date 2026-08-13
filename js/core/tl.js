@@ -69,4 +69,37 @@ TL.isChromiumFamily = function () {
     return /Chrome\/|Chromium\/|Edg\/|OPR\//.test(navigator.userAgent) && !/Firefox\//.test(navigator.userAgent);
 };
 
+TL.escapeHTML = function (str) {
+    return String(str == null ? '' : str).replace(/[&<>"']/g, function (c) {
+        return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+    });
+};
+
+TL.sameTimezone = function (a, b) {
+    if (!a || !b) return false;
+    if (a === b) return true;
+    try {
+        var probes = [
+            Date.UTC(2026, 0, 15), Date.UTC(2026, 3, 15),
+            Date.UTC(2026, 6, 15), Date.UTC(2026, 9, 15)
+        ];
+        var offset = function (tz, ts) {
+            var parts = new Intl.DateTimeFormat('en-US', {
+                timeZone: tz, hourCycle: 'h23',
+                year: 'numeric', month: '2-digit', day: '2-digit',
+                hour: '2-digit', minute: '2-digit', second: '2-digit'
+            }).formatToParts(new Date(ts));
+            var m = {};
+            parts.forEach(function (p) { m[p.type] = p.value; });
+            return Date.UTC(m.year, m.month - 1, m.day, m.hour, m.minute, m.second) - ts;
+        };
+        for (var i = 0; i < probes.length; i++) {
+            if (offset(a, probes[i]) !== offset(b, probes[i])) return false;
+        }
+        return true;
+    } catch (_) {
+        return a === b;
+    }
+};
+
 window.TL = TL;

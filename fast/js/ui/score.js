@@ -27,7 +27,7 @@ TL.score = (function () {
         var vpnOn = vpnStr.indexOf('VPN') !== -1 || vpnStr.indexOf('datacenter') !== -1 || vpnStr.indexOf('proxy') !== -1;
 
         var hasIpTz = d.network && !!d.network.ipTimezone && d.network.ipTimezone !== 'Unknown';
-        var tzMatch = hasIpTz && d.network.ipTimezone === d.network.systemTimezone;
+        var tzMatch = hasIpTz && TL.sameTimezone(d.network.ipTimezone, d.network.systemTimezone);
 
         var network = categoryScore([
             check('VPN or proxy in use', vpnOn, 3),

@@ -165,12 +165,13 @@ TL.locationSection = (function () {
         if (title)   title.textContent   = 'Your location on Earth';
 
         var hasCoords = typeof net.lat === 'number' && typeof net.lon === 'number';
-        var areaName = [net.city, net.region, net.country].filter(Boolean).join(', ') || 'Unknown area';
+        var areaName = TL.escapeHTML([net.city, net.region, net.country].filter(Boolean).join(', ') || 'Unknown area');
+        var orgName = TL.escapeHTML(net.org || 'Unknown');
         var radius = net.radiusKm || 40;
 
         var carrierNote = net.isMobileCarrier
             ? '<p class="geo-note">' +
-                'Your ISP, ' + (net.org || 'this provider') + ', looks like a mobile or cellular carrier. ' +
+                'Your ISP, ' + (orgName || 'this provider') + ', looks like a mobile or cellular carrier. ' +
                 'Carriers route traffic through a small number of regional hubs, so the marker below often lands ' +
                 'on that hub city rather than the town you are actually in, sometimes well outside the shaded circle. ' +
                 'The radius has been widened to reflect that extra uncertainty.' +
@@ -195,7 +196,7 @@ TL.locationSection = (function () {
                 '<div class="geo-stat"><span class="geo-stat-label">Longitude</span><span class="geo-stat-value">' + fmtCoord(net.lon) + '</span></div>' +
             '</div>' +
             '<div class="geo-stat"><span class="geo-stat-label">Operational radius</span><span class="geo-stat-value">~' + radius + ' km' + (net.isMobileCarrier ? ' (mobile network, widened)' : '') + '</span></div>' +
-            '<div class="geo-stat"><span class="geo-stat-label">Service provider</span><span class="geo-stat-value">' + (net.org || 'Unknown') + '</span></div>';
+            '<div class="geo-stat"><span class="geo-stat-label">Service provider</span><span class="geo-stat-value">' + orgName + '</span></div>';
 
         if (hasCoords) paintMap(net);
     }

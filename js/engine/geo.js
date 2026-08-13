@@ -102,11 +102,18 @@ TL.geo = (function () {
         'private internet','surfshark','ipvanish','cyberghost'
     ];
 
+    function matchesKeyword(haystack, keyword) {
+        if (/[a-z]/.test(keyword[0]) && /[a-z0-9]/.test(keyword[keyword.length - 1]) && keyword.indexOf(' ') === -1) {
+            return new RegExp('\\b' + keyword.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '\\b').test(haystack);
+        }
+        return haystack.indexOf(keyword) !== -1;
+    }
+
     function detectVPN(data, sysTZ) {
         var isp = (data.org || '').toLowerCase();
-        var suspicious = DC.some(function (k) { return isp.indexOf(k) !== -1; });
+        var suspicious = DC.some(function (k) { return matchesKeyword(isp, k); });
         var hasIpTz = !!data.timezone && data.timezone !== 'Unknown';
-        var tzMismatch = hasIpTz && !!sysTZ && data.timezone !== sysTZ;
+        var tzMismatch = hasIpTz && !!sysTZ && !TL.sameTimezone(data.timezone, sysTZ);
         if (suspicious && tzMismatch) return 'High risk datacenter ISP and timezone mismatch';
         if (suspicious)  return 'Likely VPN or datacenter IP detected';
         if (tzMismatch)  return 'Timezone mismatch system: ' + sysTZ + ', IP: ' + data.timezone;
