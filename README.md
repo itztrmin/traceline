@@ -70,7 +70,7 @@ I built it because most "check your fingerprint" tools either hide their methodo
 
 </td><td>
 
-**Fonts, voices, Tor & bot heuristics** — canvas-based font probing, speech synthesis voice list, Tor Browser letterboxing checks, battery API spoof detection, and a CPU timing benchmark used to spot throttled or virtualized environments.
+**Fonts, voices, Tor & bot heuristics** - canvas-based font probing, speech synthesis voice list, Tor Browser letterboxing checks, battery API spoof detection, and a CPU timing benchmark used to spot throttled or virtualized environments.
 
 </td></tr>
 </table>
@@ -79,14 +79,14 @@ Everything runs in parallel and lands in a weighted 0–10 privacy score, broken
 
 ## What it does with your data
 
-Nothing. There's no backend to send it to. The only network calls TraceLine makes are to public IP-geolocation APIs (needed to compute the network score) and, optionally, map tiles for the location view. Everything else — canvas, audio, GPU, fonts — never leaves the tab. Close it and it's gone.
+Nothing. There's no backend to send it to. The only network calls TraceLine makes are to public IP-geolocation APIs (needed to compute the network score) and, optionally, map tiles for the location view. Everything else canvas, audio, GPU, fonts never leaves the tab. Close it and it's gone.
 
 ## Running it
 
 No install, no build:
 
 ```bash
-git clone https://github.com/<your-username>/traceline.git
+git clone https://github.com/itztrmin/traceline.git
 cd traceline
 open index.html          # or xdg-open / start on Linux / Windows
 ```
@@ -97,7 +97,7 @@ A couple of checks (device enumeration, some Client Hints) want a secure context
 python3 -m http.server 8080
 ```
 
-There's also a `fast/` build with the typewriter animation stripped out — same audit, results appear instantly. Useful if you're testing repeatedly.
+There's also a `fast/` build with the typewriter animation stripped out same audit, results appear instantly. Useful if you're testing repeatedly.
 
 ## Layout
 
@@ -106,7 +106,7 @@ index.html
 css/            base, terminal chrome, components, scorecards, location
 js/
   core/         theme toggle, shared helpers (TL namespace, hashing, tz comparison)
-  engine/       the actual collectors — one file per signal type
+  engine/       the actual collectors one file per signal type
   ui/           terminal typewriter, score cards, app wiring
 fast/           same app, no animation
 ```
@@ -126,11 +126,16 @@ Adding a new check means writing a module in `js/engine/` that exports a `get()`
 | WebRTC IP leak | Disable in `about:config` → `media.peerconnection.enabled` |
 | Device memory / CPU cores | Brave randomizes these, Firefox caps both |
 
-Refresh-rate fingerprinting has no real mitigation yet, and honestly isn't used much in the wild — it's in here mostly to show it's possible.
+Refresh-rate fingerprinting has no real mitigation yet, and honestly isn't used much in the wild it's in here mostly to show it's possible.
+
+## Developer & Maintainers
+
+This project is Founded and Developed by [@itztrmin](https://github.com/itztrmin)
+**Current Maintainer:** [@aureal](https://github.com/NPSummers)
 
 ## Contributing
 
-PRs welcome, no build tooling required — just vanilla JS and CSS. Stick to the `TL.<module>.get()` pattern and you're good.
+PRs welcome, no build tooling required just vanilla JS and CSS. Stick to the `TL.<module>.get()` pattern and you're good.
 
 ## License
 
