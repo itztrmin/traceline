@@ -134,7 +134,6 @@ Refresh-rate fingerprinting has no real mitigation yet, and honestly isn't used 
 ## Developer & Maintainers
 
 This project is Founded and Developed by [@itztrmin](https://github.com/itztrmin)
-**Current Maintainer:** [@aureal](https://github.com/NPSummers)
 
 ## Contributing
 
